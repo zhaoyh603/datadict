@@ -43,6 +43,7 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *,cover
+.hypothesis/
 
 # Translations
 *.mo
@@ -50,6 +51,14 @@ coverage.xml
 
 # Django stuff:
 *.log
+local_settings.py
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
 
 # Sphinx documentation
 docs/_build/
@@ -57,53 +66,24 @@ docs/_build/
 # PyBuilder
 target/
 
-# =========================
-# Operating System Files
-# =========================
+# IPython Notebook
+.ipynb_checkpoints
 
-# OSX
-# =========================
+# pyenv
+.python-version
 
-.DS_Store
-.AppleDouble
-.LSOverride
+# celery beat schedule file
+celerybeat-schedule
 
-# Thumbnails
-._*
+# dotenv
+.env
 
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
+# virtualenv
+venv/
+ENV/
 
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Spyder project settings
+.spyderproject
 
-# Windows
-# =========================
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
-
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
-
-# Windows shortcuts
-*.lnk
+# Rope project settings
+.ropeproject

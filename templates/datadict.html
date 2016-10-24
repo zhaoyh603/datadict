@@ -1,0 +1,198 @@
+
+
+
+<head>
+    <title>数据库字典（information_schema）</title>
+</head>
+<style type="text/css">
+    /* 清除内外边距 */
+    body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+    dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+    pre, /* text formatting elements 文本格式元素 */
+    fieldset, lengend, button, input, textarea, /* form elements 表单元素 */
+    th, td { /* table elements 表格元素 */
+        margin: 0;
+        padding: 0 0 0 5px;
+        height: 22px;
+    }
+
+    /* 设置默认字体 */
+    body,
+    button, input, select, textarea ,.x-body{ /* for ie */
+        /*font: 12px/1 Tahoma, Helvetica, Arial, "宋体", sans-serif;*/
+        font: 12px/1 "微软雅黑","Microsoft YaHei",Tahoma, Helvetica, Arial, "\5b8b\4f53", sans-serif; /* 用 ascii 字符表示，使得在任何编码下都无问题 */
+    //  font:italic small-caps bold 12px/1.5em 微软雅黑","Microsoft YaHei,arial,verdana;
+    }
+
+    h1 { font-size: 18px; /* 18px / 12px = 1.5 */ }
+    h2 { font-size: 16px; }
+    h3 { font-size: 14px; }
+    h4, h5, h6 { font-size: 100%; }
+
+    address, cite, dfn, em, var { font-style: normal; } /* 将斜体扶正 */
+    code, kbd, pre, samp, tt { font-family: "Courier New", Courier, monospace; } /* 统一等宽字体 */
+    small { font-size: 12px; } /* 小于 12px 的中文很难阅读，让 small 正常化 */
+
+    /* 重置列表元素 */
+    ul, ol { list-style: none; }
+
+    /* 重置文本格式元素 */
+    a { text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    abbr[title], acronym[title] { /* 注：1.ie6 不支持 abbr; 2.这里用了属性选择符，ie6 下无效果 */
+        border-bottom: 1px dotted;
+        cursor: help;
+    }
+    q:before, q:after { content: ''; }
+    input,button,select,textarea{outline:none}
+
+    /* 重置表单元素 */
+    legend { color: #000; } /* for ie6 */
+    fieldset, img { border: none; } /* img 搭车：让链接里的 img 无边框 */
+    /* 注：optgroup 无法扶正 */
+    button, input, select, textarea {
+        font-size: 100%; /* 使得表单元素在 ie 下能继承字体大小 */
+    }
+
+    /* 重置表格元素 */
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+
+    /* 重置 hr */
+    hr {
+        border: none;
+        height: 1px;
+    }
+    a:link { text-decoration: none;color: #5e7ea7}
+    a:active { text-decoration:blink}
+    a:hover { text-decoration:none;color: #5e7ea7}
+    a:visited { text-decoration: none;color: #5e7ea7}
+    /* 让非ie浏览器默认也显示垂直滚动条，防止因滚动条引起的闪烁 */
+    html { overflow-y: scroll; }
+
+    h4{
+        font-size: 20px;
+        margin-top: 4px;
+        color: #113c3d;
+    }
+    h5{
+        margin: 4px 0;
+        font-size: 14px;
+        color: #222;
+    }
+    table{
+        width: 100%;
+        border: 1px solid #333;
+        font-size: 13px;
+    }
+    .outer{
+        padding: 10px;
+    }
+    .inner{
+        border:1px solid #ccc;
+        margin: 0 0 40px 0;
+        padding: 0 10px 10px 10px;
+    }
+    table thead td{
+        background: #e4dede;
+        color: #222;
+        font-size:15px;
+        font-weight: bold;
+        text-align:center;
+        height: 30px;
+    }
+</style>
+<div class="outer">
+
+
+<div style="text-align: center;line-height: 60px;" id="XTOP">
+    <span style="font-size: 24px;font-weight: bold"数据字典文档 </span>
+</div>
+<div style="text-align: left;line-height: 60px;margin-top: 30px;" >
+        <span style="font-size: 24px;font-weight: bold">一、文档索引</span>
+</div>
+<div style="margin-top: 20px;">
+    
+    {%  for table in tables %}
+    <div style="margin-top: 8px;font-size: 13px;padding-left: 30px;"><a href="#{{table['name']}}">
+        {table.name}   
+        {% '.'*30 %}      
+        
+    {%   tables[name] %}
+       
+    </a></div>
+    {%  endfor %}
+   </div>
+
+    <div style="text-align: left;line-height: 60px;margin-top: 30px;" >
+        <span style="font-size: 24px;font-weight: bold">二、表结构详情（基本信息 | 属性 | 索引）</span>
+    </div>
+
+<div style="border:1px solid #ccc;margin-top: 40px;" class="inner" id="1F">
+<!-- 表元素循环开始 -->
+
+    <div style="font-size: 18px;font-weight: bold;margin-top: 8px;padding-top: 5px;color: #1b1919;line-height: 34px;">
+        1、CHARACTER_SETS
+        <span style="font-weight: normal;font-size:15px;">(
+        MEMORY , utf8_general_ci
+        
+        ) </span><span style="font-size: 15px;"><a href="#XTOP">返回顶部</a></div>
+
+    
+    <table style="width: 100%;margin-top: 10px;" border="1" >
+        <thead>
+            <tr>
+                <td style="width:40px;">序号</td>
+                <td style="width:220px;">列名</td>
+                <td style="width:90px;">数据类型</td>
+                <td style="width:90px;">是否可空</td>
+                <td style="width:160px;">默认值</td>
+                <td style="width:300px">注释</td>
+            </tr>
+        </thead>
+        
+                        <tr>
+                            <td style="text-align: right;padding-right: 5px;">1</td>
+                            <td>CHARACTER_SET_NAME</td>
+                            <td>varchar(32) <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>NOT NULL</td>
+                            <td></td>
+                            <td>--</td>
+                        </tr>
+                 
+                        <tr>
+                            <td style="text-align: right;padding-right: 5px;">2</td>
+                            <td>DEFAULT_COLLATE_NAME</td>
+                            <td>varchar(32) <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>NOT NULL</td>
+                            <td></td>
+                            <td>--</td>
+                        </tr>
+                 
+                        <tr>
+                            <td style="text-align: right;padding-right: 5px;">3</td>
+                            <td>DESCRIPTION</td>
+                            <td>varchar(60) <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>NOT NULL</td>
+                            <td></td>
+                            <td>--</td>
+                        </tr>
+                 
+                        <tr>
+                            <td style="text-align: right;padding-right: 5px;">4</td>
+                            <td>MAXLEN</td>
+                            <td>bigint(3) <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>NOT NULL</td>
+                            <td>0</td>
+                            <td>--</td>
+                        </tr>
+                 
+    </table>
+    
+
+</div >
+
+<!-- 表元素循环结束 -->

@@ -4,8 +4,12 @@ from flask import Flask
 from flask import render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import text
+import sys
+reload(sys)
+sys.setdefaultencoding('GBK')
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'oracle://scott:tiger@127.0.0.1:1521/sidname'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'oracle://G1:1@10.10.3.143:1521/asupp11'
+app.config['TESTING'] = True
 db = SQLAlchemy(app)
 
 class User_table(db.Model):
@@ -22,23 +26,33 @@ class User_table(db.Model):
 
 @app.route('/')
 def index():
-	name={}
-	sql=text(
-		'''
-		select t.table_name,t.column_name,t.data_type,t.data_length,t.nullable,t.column_id,c.comments, 
-       (SELECT CASE WHEN t.column_name=m.column_name THEN 1 ELSE 0 END FROM DUAL) iskey 
-       FROM user_tab_cols t, user_col_comments c, (select m.column_name from user_constraints s, user_cons_columns m 
-             where lower(m.table_name)='us_cities' and m.table_name=s.table_name 
-             and m.constraint_name=s.constraint_name and s.constraint_type='P') m 
-       WHERE lower(t.table_name)='us_cities' 
-             and c.table_name=t.table_name 
-             and c.column_name=t.column_name 
-             and t.hidden_column='NO' 
- 		order by t.column_id
-		''')
+    name={}
 
-    result = db.session.execute(sql,{'val': 5}).fetchall() 
-	return render_template('datadict.html', tables=tables,cols=cols)
+    sql_tab=text("select table_name,comments from user_tab_comments where table_type='TABLE'")
+    sql_cols=text(
+	'''
+       select t.table_name,
+       t.comments table_comments,
+       c.column_id,
+       c.column_name,
+       c.data_type || '(' ||
+       decode(c.data_type, 'NUMBER', c.data_length - c.DATA_SCALE,c.data_length) ||
+       decode(c.data_type, 'NUMBER', ',') || c.DATA_SCALE || ')' data_type,
+       c.nullable,
+       cc.comments col_comments
+       FROM user_tab_cols c, user_col_comments cc, user_tab_comments t
+       WHERE c.table_name = t.table_name
+       and c.table_name = cc.table_name
+       and c.column_name = cc.column_name
+       and c.hidden_column = 'NO'
+       and t.table_type = 'TABLE'
+       order by t.table_name, c.column_id
+       ''')
+
+    tabs= db.session.execute(sql_tab).fetchall() 
+    cols = db.session.execute(sql_cols).fetchall() 
+
+    return render_template('datadict.html', tabs=tabs,cols=cols)
 
 if __name__ == '__main__':
     app.run()

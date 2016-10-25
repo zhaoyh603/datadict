@@ -2,6 +2,7 @@
 
 
 <head>
+    <meta charset="UTF-8">
     <title>数据库字典（information_schema）</title>
 </head>
 <style type="text/css">
@@ -116,12 +117,11 @@
 </div>
 <div style="margin-top: 20px;">
     
-    {%  for table in tables %}
-    <div style="margin-top: 8px;font-size: 13px;padding-left: 30px;"><a href="#{{table['name']}}">
-        {table.name}   
-        {% '.'*30 %}      
+    {%  for tabs in tabs %}
+    <div style="margin-top: 8px;font-size: 13px;padding-left: 30px;"><a href="#{{tabs.table_name}}">
+        {{tabs.table_name}} ......................              
         
-    {%   tables[name] %}
+    {{   tabs.comments}}
        
     </a></div>
     {%  endfor %}
@@ -130,16 +130,14 @@
     <div style="text-align: left;line-height: 60px;margin-top: 30px;" >
         <span style="font-size: 24px;font-weight: bold">二、表结构详情（基本信息 | 属性 | 索引）</span>
     </div>
-
-<div style="border:1px solid #ccc;margin-top: 40px;" class="inner" id="1F">
+ {%  for tabs in tabs %}
+ 
+<div style="border:1px solid #ccc;margin-top: 40px;" class="inner" id="{{tabs.table_name}}">
 <!-- 表元素循环开始 -->
 
     <div style="font-size: 18px;font-weight: bold;margin-top: 8px;padding-top: 5px;color: #1b1919;line-height: 34px;">
-        1、CHARACTER_SETS
-        <span style="font-weight: normal;font-size:15px;">(
-        MEMORY , utf8_general_ci
-        
-        ) </span><span style="font-size: 15px;"><a href="#XTOP">返回顶部</a></div>
+        {{tabs.comments}}
+        <span style="font-weight: normal;font-size:15px;"><span style="font-size: 15px;"><a href="#XTOP">返回顶部</a></div>
 
     
     <table style="width: 100%;margin-top: 10px;" border="1" >
@@ -153,42 +151,17 @@
                 <td style="width:300px">注释</td>
             </tr>
         </thead>
-        
+                {%  for cols in cols %}
                         <tr>
-                            <td style="text-align: right;padding-right: 5px;">1</td>
-                            <td>CHARACTER_SET_NAME</td>
-                            <td>varchar(32) <span style="padding-left: 30px;font-weight: bold;"></span></td>
-                            <td>NOT NULL</td>
+                            <td style="text-align: right;padding-right: 5px;">  {{cols.column_id}}</td>
+                            <td>  {{cols.column_name}}</td>
+                            <td>{{cols.data_type}} <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>{{cols.nullable}}</td>
                             <td></td>
-                            <td>--</td>
+                            <td>{{cols.col_comments}}</td>
                         </tr>
-                 
-                        <tr>
-                            <td style="text-align: right;padding-right: 5px;">2</td>
-                            <td>DEFAULT_COLLATE_NAME</td>
-                            <td>varchar(32) <span style="padding-left: 30px;font-weight: bold;"></span></td>
-                            <td>NOT NULL</td>
-                            <td></td>
-                            <td>--</td>
-                        </tr>
-                 
-                        <tr>
-                            <td style="text-align: right;padding-right: 5px;">3</td>
-                            <td>DESCRIPTION</td>
-                            <td>varchar(60) <span style="padding-left: 30px;font-weight: bold;"></span></td>
-                            <td>NOT NULL</td>
-                            <td></td>
-                            <td>--</td>
-                        </tr>
-                 
-                        <tr>
-                            <td style="text-align: right;padding-right: 5px;">4</td>
-                            <td>MAXLEN</td>
-                            <td>bigint(3) <span style="padding-left: 30px;font-weight: bold;"></span></td>
-                            <td>NOT NULL</td>
-                            <td>0</td>
-                            <td>--</td>
-                        </tr>
+                  {%  endfor %}
+                   
                  
     </table>
     
@@ -196,3 +169,4 @@
 </div >
 
 <!-- 表元素循环结束 -->
+ {%  endfor %}

@@ -158,14 +158,37 @@
                             <td>  {{col.column_name}}</td>
                             <td>{{col.data_type}} <span style="padding-left: 30px;font-weight: bold;"></span></td>
                             <td>{{col.nullable}}</td>
-                            <td></td>
-                            <td>{{col.col_comments}}</td>
+                            <td>{{col.DATA_DEFAULT}}</td>
+                            <td>{{col.col_comments or ''}}</td>
                         </tr>
                   {%  endfor %}
                    
                  
     </table>
-    
+
+    <table style="width: 100%;margin-top: 10px;" border="1">
+            <thead>
+                <tr>
+                    <td style="width:56px;">序号</td>
+                    <td style="width:260px;">索引名</td>
+                    <td style="width:140px;">类型</td>
+                    <td style="width:300px;">包含字段</td>
+                </tr>
+            </thead>
+            
+                    <tbody>
+                     {%  for con in tab.cons %}
+                     
+
+                    <tr>
+                           <td style="text-align: right;padding-right: 5px;">{{loop.index }}</td>
+                           <td>{{con.constraint_name}}</td>
+                           <td>{{con.constraint_type}}</td>
+                           <td>{{con.column_name}}  </td>
+                    </tr>
+                    {%  endfor %}                    
+                    
+    </tbody></table>
 
 </div >
 

@@ -8,21 +8,22 @@ import sys
 reload(sys)
 sys.setdefaultencoding('GBK')
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'oracle://G1:1@10.10.3.143:1521/asupp11'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'oracle://gdmid:1@127.0.0.1:1521/orcl'
 app.config['TESTING'] = True
 db = SQLAlchemy(app)
 
-class User_table(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
+class User_table():
+    table_name = ''
+    table_comments=''
+    cols=[]
+    
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
+    def __init__(self, table_name, table_comments):
+        self.table_name = table_name
+        self.table_comments = table_comments
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User_table %r>' % self.table_name
 
 @app.route('/')
 def index():
@@ -46,13 +47,20 @@ def index():
        and c.column_name = cc.column_name
        and c.hidden_column = 'NO'
        and t.table_type = 'TABLE'
+       and t.table_name=:table
        order by t.table_name, c.column_id
        ''')
 
     tabs= db.session.execute(sql_tab).fetchall() 
-    cols = db.session.execute(sql_cols).fetchall() 
+    tables=[]
+    for tab in tabs:
+        t=User_table(tab.table_name,tab.comments)
+        print t
+        t.cols = db.session.execute(sql_cols,{'table':tab.table_name}).fetchall() 
+        tables.append(t)
+    print tables
 
-    return render_template('datadict.html', tabs=tabs,cols=cols)
+    return render_template('datadict.html', tabs=tables)
 
 if __name__ == '__main__':
     app.run()

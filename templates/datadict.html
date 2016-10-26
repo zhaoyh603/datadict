@@ -117,11 +117,12 @@
 </div>
 <div style="margin-top: 20px;">
     
-    {%  for tabs in tabs %}
-    <div style="margin-top: 8px;font-size: 13px;padding-left: 30px;"><a href="#{{tabs.table_name}}">
-        {{tabs.table_name}} ......................              
+    {%  for tab  in tabs %}
+    <div style="margin-top: 8px;font-size: 13px;padding-left: 30px;"><a href="#{{tab.table_name}}">
+        {{tab.table_name}}
+        {{ '.'*100 }}             
         
-    {{   tabs.comments}}
+    {{   tab.table_comments or tab.table_name}}
        
     </a></div>
     {%  endfor %}
@@ -130,13 +131,13 @@
     <div style="text-align: left;line-height: 60px;margin-top: 30px;" >
         <span style="font-size: 24px;font-weight: bold">二、表结构详情（基本信息 | 属性 | 索引）</span>
     </div>
- {%  for tabs in tabs %}
+ {%  for tab in tabs %}
  
-<div style="border:1px solid #ccc;margin-top: 40px;" class="inner" id="{{tabs.table_name}}">
+<div style="border:1px solid #ccc;margin-top: 40px;" class="inner" id="{{tab.table_name}}">
 <!-- 表元素循环开始 -->
 
     <div style="font-size: 18px;font-weight: bold;margin-top: 8px;padding-top: 5px;color: #1b1919;line-height: 34px;">
-        {{tabs.comments}}
+        {{tab.table_name}}({{tab.table_comments or tab.table_name}})
         <span style="font-weight: normal;font-size:15px;"><span style="font-size: 15px;"><a href="#XTOP">返回顶部</a></div>
 
     
@@ -151,14 +152,14 @@
                 <td style="width:300px">注释</td>
             </tr>
         </thead>
-                {%  for cols in cols %}
+                {%  for col in tab.cols %}
                         <tr>
-                            <td style="text-align: right;padding-right: 5px;">  {{cols.column_id}}</td>
-                            <td>  {{cols.column_name}}</td>
-                            <td>{{cols.data_type}} <span style="padding-left: 30px;font-weight: bold;"></span></td>
-                            <td>{{cols.nullable}}</td>
+                            <td style="text-align: right;padding-right: 5px;">  {{col.column_id}}</td>
+                            <td>  {{col.column_name}}</td>
+                            <td>{{col.data_type}} <span style="padding-left: 30px;font-weight: bold;"></span></td>
+                            <td>{{col.nullable}}</td>
                             <td></td>
-                            <td>{{cols.col_comments}}</td>
+                            <td>{{col.col_comments}}</td>
                         </tr>
                   {%  endfor %}
                    
